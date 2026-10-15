@@ -188,6 +188,11 @@ def link_row(paper, v, extra=""):
     return '<p class="actions">' + "".join(out) + extra + "</p>"
 
 
+COPY_JS = """document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',()=>{
+  navigator.clipboard.writeText(document.getElementById(b.dataset.target).textContent).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1500)});
+}));"""
+
+
 def paper_page(paper, versions, subject, label):
     v = versions[0]
     if plain(label).lower() == plain(v["title"]).lower():
@@ -244,9 +249,7 @@ ots verify {v['files'][0]}.ots</pre>
 </article>
 <footer>© {html.escape(AUTHOR)} · <a href="../../">All preprints</a> · <a href="{REPO}">Source repository</a></footer>
 <script>
-document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',()=>{{
-  navigator.clipboard.writeText(document.getElementById(b.dataset.target).textContent).then(()=>{{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1500)}});
-}}));
+{COPY_JS}
 </script>"""
     return page(f"{title} · Suvrit Sra", body, head, depth=2, description=abstract[:300])
 
@@ -255,7 +258,9 @@ def card(paper, versions, label):
     v = versions[0]
     if plain(label).lower() == plain(v["title"]).lower():
         label = ""
-    chips = [f'<a class="chip" href="papers/{paper}/{v["files"][0]}">PDF</a>']
+    chips = [f'<a class="chip" href="papers/{paper}/{v["files"][0]}">PDF</a>',
+             f'<button class="chip" aria-expanded="false" aria-controls="abs-{paper}">Abstract</button>',
+             f'<button class="chip" aria-expanded="false" aria-controls="bib-{paper}">BibTeX</button>']
     if v.get("arxiv"):
         chips.append(f'<a class="chip" href="https://arxiv.org/abs/{v["arxiv"]}">arXiv:{v["arxiv"]}</a>')
     n = len(versions)
@@ -264,6 +269,8 @@ def card(paper, versions, label):
   {f'<p class="label">{rich(label)}</p>' if label else ''}
   <p class="meta">{v['version']} · {long_date(v['date'])} · {v['pages']} pages{f' · {n} versions' if n > 1 else ''}</p>
   <p class="chips">{''.join(chips)}</p>
+  <p class="abstract" id="abs-{paper}" hidden>{rich(v['abstract'])}</p>
+  <div class="bib" id="bib-{paper}" hidden><button class="copy" data-target="bibtex-{paper}">Copy</button><pre id="bibtex-{paper}">{html.escape(bibtex(paper, v))}</pre></div>
 </li>"""
 
 
@@ -298,7 +305,15 @@ def index_page(papers, subjects, info, notes):
 </header>
 {sections}
 {notes_html}
-<footer>{count} papers · updated {long_date(latest)} · © {html.escape(AUTHOR)}</footer>"""
+<footer>{count} papers · updated {long_date(latest)} · © {html.escape(AUTHOR)}</footer>
+<script>
+document.querySelectorAll('.chip[aria-controls]').forEach(b=>b.addEventListener('click',()=>{{
+  const open=b.getAttribute('aria-expanded')!=='true';
+  b.setAttribute('aria-expanded',open);
+  document.getElementById(b.getAttribute('aria-controls')).hidden=!open;
+}}));
+{COPY_JS}
+</script>"""
     return page("Research Preprints · Suvrit Sra", body, head,
                 description=f"Mathematics preprints by {AUTHOR} ({AFFILIATION}), released version by version with OpenTimestamps proofs.")
 

@@ -62,7 +62,7 @@ nav.top .links a:hover { color: var(--accent); }
 .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .btn.primary:hover { filter: brightness(1.08); color: var(--accent-ink); }
 
-ul.cards { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+ul.cards { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .card {
   background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px;
   transition: border-color 0.15s;
@@ -76,6 +76,10 @@ ul.cards { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
   background: var(--chip); color: var(--ink);
 }
 .chip:hover { background: var(--accent-soft); color: var(--accent); text-decoration: none; }
+button.chip { border: 0; font-family: inherit; line-height: inherit; cursor: pointer; }
+.chip[aria-expanded="true"] { background: var(--accent-soft); color: var(--accent); }
+.card .abstract { font-size: 0.94rem; margin: 0.8em 0 0; }
+.card .bib { margin-top: 0.8em; }
 ul.plain { padding-left: 1.1em; }
 ul.plain li { margin: 0.4em 0; }
 
