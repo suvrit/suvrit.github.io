@@ -289,7 +289,7 @@ def index_page(papers, subjects, info, notes):
     body = f"""{nav(0)}
 <header class="hero">
   <p class="eyebrow">{html.escape(AUTHOR)} · {html.escape(AFFILIATION)}</p>
-  <h1>Research Preprints</h1>
+  <h1>Research Preprints <span class="sub">(Oct 2026 onwards)</span></h1>
   <p class="lede">Papers released version by version, each file timestamped with
   <a href="https://opentimestamps.org">OpenTimestamps</a> on the day it appears. Every version stays
   available. Where a paper is also on arXiv, its page links there.</p>
