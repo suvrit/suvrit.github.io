@@ -426,9 +426,12 @@ function show(id){
 views.forEach(b=>b.addEventListener('click',()=>{
   show(b.dataset.view);
   history.replaceState(null,'',b.dataset.view==='by-date'?'#by-date':location.pathname);
+  try{localStorage.setItem('view',b.dataset.view);}catch(e){}
 }));
 document.querySelectorAll('.toc a:not([href="#notes"])').forEach(a=>a.addEventListener('click',()=>show('by-subject')));
-if(location.hash==='#by-date')show('by-date');
+let saved;try{saved=localStorage.getItem('view');}catch(e){}
+const anchor=document.getElementById(location.hash.slice(1));
+if(location.hash==='#by-date'||saved==='by-date'&&!anchor?.closest('#by-subject'))show('by-date');
 document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',()=>{
   navigator.clipboard.writeText(document.getElementById(b.dataset.target).textContent).then(()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1500)});
 }));

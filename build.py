@@ -325,9 +325,12 @@ function show(id){{
 views.forEach(b=>b.addEventListener('click',()=>{{
   show(b.dataset.view);
   history.replaceState(null,'',b.dataset.view==='by-date'?'#by-date':location.pathname);
+  try{{localStorage.setItem('view',b.dataset.view);}}catch(e){{}}
 }}));
 document.querySelectorAll('.toc a:not([href="#notes"])').forEach(a=>a.addEventListener('click',()=>show('by-subject')));
-if(location.hash==='#by-date')show('by-date');
+let saved;try{{saved=localStorage.getItem('view');}}catch(e){{}}
+const anchor=document.getElementById(location.hash.slice(1));
+if(location.hash==='#by-date'||saved==='by-date'&&!anchor?.closest('#by-subject'))show('by-date');
 {COPY_JS}
 </script>"""
     return page("Research Preprints · Suvrit Sra", body, head,
