@@ -77,7 +77,8 @@ ul.cards { list-style: none; padding: 0; margin: 0; display: grid; grid-template
 }
 .chip:hover { background: var(--accent-soft); color: var(--accent); text-decoration: none; }
 button.chip { border: 0; font-family: inherit; line-height: inherit; cursor: pointer; }
-.chip[aria-expanded="true"] { background: var(--accent-soft); color: var(--accent); }
+.chip[aria-expanded="true"], .chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.view { align-items: center; margin-top: 1em; font-size: 0.9rem; color: var(--muted); }
 .card .abstract { font-size: 0.94rem; margin: 0.8em 0 0; }
 .card .bib { margin-top: 0.8em; }
 ul.plain { padding-left: 1.1em; }

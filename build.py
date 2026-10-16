@@ -254,32 +254,36 @@ ots verify {v['files'][0]}.ots</pre>
     return page(f"{title} · Suvrit Sra", body, head, depth=2, description=abstract[:300])
 
 
-def card(paper, versions, label):
+def card(paper, versions, label, subject=""):
+    """subject is passed for the by-date list, where it is shown and keeps the element ids distinct."""
     v = versions[0]
     if plain(label).lower() == plain(v["title"]).lower():
         label = ""
+    key = f"date-{paper}" if subject else paper
     chips = [f'<a class="chip" href="papers/{paper}/{v["files"][0]}">PDF</a>',
-             f'<button class="chip" aria-expanded="false" aria-controls="abs-{paper}">Abstract</button>',
-             f'<button class="chip" aria-expanded="false" aria-controls="bib-{paper}">BibTeX</button>']
+             f'<button class="chip" aria-expanded="false" aria-controls="abs-{key}">Abstract</button>',
+             f'<button class="chip" aria-expanded="false" aria-controls="bib-{key}">BibTeX</button>']
     if v.get("arxiv"):
         chips.append(f'<a class="chip" href="https://arxiv.org/abs/{v["arxiv"]}">arXiv:{v["arxiv"]}</a>')
     n = len(versions)
     return f"""<li class="card">
   <h3><a href="papers/{paper}/">{rich(v['title'])}</a></h3>
   {f'<p class="label">{rich(label)}</p>' if label else ''}
-  <p class="meta">{v['version']} · {long_date(v['date'])} · {v['pages']} pages{f' · {n} versions' if n > 1 else ''}</p>
+  <p class="meta">{v['version']} · {long_date(v['date'])} · {v['pages']} pages{f' · {n} versions' if n > 1 else ''}{f' · {html.escape(subject)}' if subject else ''}</p>
   <p class="chips">{''.join(chips)}</p>
-  <p class="abstract" id="abs-{paper}" hidden>{rich(v['abstract'])}</p>
-  <div class="bib" id="bib-{paper}" hidden><button class="copy" data-target="bibtex-{paper}">Copy</button><pre id="bibtex-{paper}">{html.escape(bibtex(paper, v))}</pre></div>
+  <p class="abstract" id="abs-{key}" hidden>{rich(v['abstract'])}</p>
+  <div class="bib" id="bib-{key}" hidden><button class="copy" data-target="bibtex-{key}">Copy</button><pre id="bibtex-{key}">{html.escape(bibtex(paper, v))}</pre></div>
 </li>"""
 
 
 def index_page(papers, subjects, info, notes):
     groups = {s: [] for s in subjects}
     groups["Other"] = []
+    dated = []
     for paper, versions in sorted(papers.items(), key=lambda kv: kv[1][0]["date"], reverse=True):
         subject, label = info.get(paper, ("Other", ""))
         groups.setdefault(subject, []).append(card(paper, versions, label))
+        dated.append(card(paper, versions, label, subject))
     sections = "".join(
         f'<section id="{re.sub(r"[^a-z]+", "-", s.lower())}"><h2>{html.escape(s)}</h2><ul class="cards">{"".join(cards)}</ul></section>'
         for s, cards in groups.items() if cards)
@@ -302,8 +306,10 @@ def index_page(papers, subjects, info, notes):
   available. Where a paper is also on arXiv, its page links there.</p>
   <p class="actions"><a class="btn primary" href="overview.pdf">One-paragraph summaries (PDF)</a><a class="btn" href="{REPO}">Source repository</a><a class="btn" href="{ARXIV_AUTHOR}">arXiv listing</a></p>
   <p class="toc">{toc}{' <a href="#notes">Notes</a>' if notes else ''}</p>
+  <p class="chips view" role="group" aria-label="List papers">View:<button class="chip" data-view="by-subject" aria-pressed="true">By subject</button><button class="chip" data-view="by-date" aria-pressed="false">By date</button></p>
 </header>
-{sections}
+<div id="by-subject">{sections}</div>
+<section id="by-date" hidden><h2>All papers, newest first</h2><ul class="cards">{"".join(dated)}</ul></section>
 {notes_html}
 <footer>{count} papers · updated {long_date(latest)} · © {html.escape(AUTHOR)}</footer>
 <script>
@@ -312,6 +318,16 @@ document.querySelectorAll('.chip[aria-controls]').forEach(b=>b.addEventListener(
   b.setAttribute('aria-expanded',open);
   document.getElementById(b.getAttribute('aria-controls')).hidden=!open;
 }}));
+const views=document.querySelectorAll('.view button');
+function show(id){{
+  views.forEach(b=>{{const on=b.dataset.view===id;b.setAttribute('aria-pressed',on);document.getElementById(b.dataset.view).hidden=!on;}});
+}}
+views.forEach(b=>b.addEventListener('click',()=>{{
+  show(b.dataset.view);
+  history.replaceState(null,'',b.dataset.view==='by-date'?'#by-date':location.pathname);
+}}));
+document.querySelectorAll('.toc a:not([href="#notes"])').forEach(a=>a.addEventListener('click',()=>show('by-subject')));
+if(location.hash==='#by-date')show('by-date');
 {COPY_JS}
 </script>"""
     return page("Research Preprints · Suvrit Sra", body, head,
