@@ -309,7 +309,7 @@ def index_page(papers, subjects, info, notes):
   <p class="chips view" role="group" aria-label="List papers">View:<button class="chip" data-view="by-subject" aria-pressed="true">By subject</button><button class="chip" data-view="by-date" aria-pressed="false">By date</button></p>
 </header>
 <div id="by-subject">{sections}</div>
-<section id="by-date" hidden><h2>All papers, newest first</h2><ul class="cards">{"".join(dated)}</ul></section>
+<section id="by-date" hidden><h2>All papers, newest first <span class="count">Showing {len(dated)} of {count}</span></h2><ul class="cards">{"".join(dated)}</ul></section>
 {notes_html}
 <footer>{count} papers · updated {long_date(latest)} · © {html.escape(AUTHOR)}</footer>
 <script>
