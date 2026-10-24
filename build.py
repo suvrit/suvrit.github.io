@@ -178,9 +178,15 @@ def nav(depth):
 </nav>"""
 
 
+def extra_label(f):
+    """Button text for a file released beside the paper's PDF."""
+    return "Supplement" if "supplement" in f else html.escape(f)
+
+
 def link_row(paper, v, extra=""):
     pdf = v["files"][0]
     out = [f'<a class="btn primary" href="{pdf}">PDF</a>']
+    out += [f'<a class="btn" href="{f}">{extra_label(f)}</a>' for f in v["files"][1:]]
     if v.get("arxiv"):
         out.append(f'<a class="btn" href="https://arxiv.org/abs/{v["arxiv"]}">arXiv:{v["arxiv"]}</a>')
     out.append(f'<a class="btn" href="{folder_url(paper, v)}">GitHub</a>')
@@ -261,6 +267,7 @@ def card(paper, versions, label, subject=""):
         label = ""
     key = f"date-{paper}" if subject else paper
     chips = [f'<a class="chip" href="papers/{paper}/{v["files"][0]}">PDF</a>',
+             *[f'<a class="chip" href="papers/{paper}/{f}">{extra_label(f)}</a>' for f in v["files"][1:]],
              f'<button class="chip" aria-expanded="false" aria-controls="abs-{key}">Abstract</button>',
              f'<button class="chip" aria-expanded="false" aria-controls="bib-{key}">BibTeX</button>']
     if v.get("arxiv"):
