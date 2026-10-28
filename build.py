@@ -24,6 +24,10 @@ AFFILIATION = "TU Munich, Department of Mathematics, School of CIT"
 ARXIV_AUTHOR = "https://arxiv.org/search/?searchtype=author&query=Sra%2C+Suvrit"
 HEXAGON = "https://hexagonmath.org"
 HEXAGON_AUTHOR = f"{HEXAGON}/users/user_de5115e4-2cc3-4e4b-8684-2fb94a0dd0d9"
+# The hexlink icon: a solid hexagon with the six-petal hex sign (hexafoil) cut out; each petal
+# is drawn by compass from the two neighbouring corners, so its tip is a corner.
+HEX_ICON = ('<svg class="hexicon" viewBox="-11 -11 22 22" aria-hidden="true">'
+            '<path fill-rule="evenodd" d="M0 -10L8.66 -5L8.66 5L0 10L-8.66 5L-8.66 -5ZM0 0A10 10 0 0 1 0 -10A10 10 0 0 1 0 0M0 0A10 10 0 0 1 8.66 -5A10 10 0 0 1 0 0M0 0A10 10 0 0 1 8.66 5A10 10 0 0 1 0 0M0 0A10 10 0 0 1 0 10A10 10 0 0 1 0 0M0 0A10 10 0 0 1 -8.66 5A10 10 0 0 1 0 0M0 0A10 10 0 0 1 -8.66 -5A10 10 0 0 1 0 0"/></svg>')
 KATEX = "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11"
 GENERATED = ["index.html", "papers", "sitemap.xml", "robots.txt", "overview.pdf"]
 
@@ -176,8 +180,13 @@ def nav(depth):
     rel = "../" * depth
     return f"""<nav class="top">
   <a class="brand" href="{rel}">Suvrit Sra</a>
-  <span class="links"><a href="{REPO}">GitHub</a><a href="{ARXIV_AUTHOR}">arXiv</a><a href="{HEXAGON_AUTHOR}">Hexagon</a><a href="https://www.tum.de/">TUM</a></span>
+  <span class="links"><a href="{REPO}">GitHub</a><a href="{ARXIV_AUTHOR}">arXiv</a>{hexlink(HEXAGON_AUTHOR, "Hexagon")}<a href="https://www.tum.de/">TUM</a></span>
 </nav>"""
+
+
+def hexlink(href, text, cls=""):
+    """A link to Hexagon, marked by the hex-sign icon."""
+    return f'<a class="{(cls + " ") if cls else ""}hexlink" href="{href}">{HEX_ICON}{text}</a>'
 
 
 def extra_label(f):
@@ -192,7 +201,7 @@ def link_row(paper, v, extra=""):
     if v.get("arxiv"):
         out.append(f'<a class="btn" href="https://arxiv.org/abs/{v["arxiv"]}">arXiv:{v["arxiv"]}</a>')
     if v.get("hexagon"):
-        out.append(f'<a class="btn" href="{HEXAGON}/abs/{v["hexagon"]}">hexagon:{v["hexagon"]}</a>')
+        out.append(hexlink(f'{HEXAGON}/abs/{v["hexagon"]}', f'hexagon:{v["hexagon"]}', "btn"))
     out.append(f'<a class="btn" href="{folder_url(paper, v)}">GitHub</a>')
     out.append(f'<a class="btn" href="{pdf}.ots" title="OpenTimestamps proof">Timestamp</a>')
     return '<p class="actions">' + "".join(out) + extra + "</p>"
@@ -234,7 +243,7 @@ def paper_page(paper, versions, subject, label):
         f"<tr><td>{w['version']}</td><td>{long_date(w['date'])}</td><td>{w['pages']} pp</td>"
         f"<td><a href=\"{w['files'][0]}\">PDF</a></td><td><a href=\"{w['files'][0]}.ots\">.ots</a></td>"
         f"<td>{('<a href=\"https://arxiv.org/abs/' + w['arxiv'] + '\">' + w['arxiv'] + '</a>') if w.get('arxiv') else '—'}</td>"
-        f"<td>{('<a href=\"' + HEXAGON + '/abs/' + w['hexagon'] + '\">' + w['hexagon'] + '</a>') if w.get('hexagon') else '—'}</td></tr>"
+        f"<td>{hexlink(HEXAGON + '/abs/' + w['hexagon'], w['hexagon']) if w.get('hexagon') else '—'}</td></tr>"
         for w in versions)
     bib = html.escape(bibtex(paper, v))
     many = len(versions) > 1
@@ -278,7 +287,7 @@ def card(paper, versions, label, subject=""):
     if v.get("arxiv"):
         chips.append(f'<a class="chip" href="https://arxiv.org/abs/{v["arxiv"]}">arXiv:{v["arxiv"]}</a>')
     if v.get("hexagon"):
-        chips.append(f'<a class="chip" href="{HEXAGON}/abs/{v["hexagon"]}">hexagon:{v["hexagon"]}</a>')
+        chips.append(hexlink(f'{HEXAGON}/abs/{v["hexagon"]}', f'hexagon:{v["hexagon"]}', "chip"))
     n = len(versions)
     return f"""<li class="card">
   <h3><a href="papers/{paper}/">{rich(v['title'])}</a></h3>
@@ -317,8 +326,8 @@ def index_page(papers, subjects, info, notes):
   <h1>Research Preprints <span class="sub">(Oct 2026 onwards)</span></h1>
   <p class="lede">Papers released version by version, each file timestamped with
   <a href="https://opentimestamps.org">OpenTimestamps</a> on the day it appears. Every version stays
-  available. Where a paper is also on arXiv, its page links there.</p>
-  <p class="actions"><a class="btn primary" href="overview.pdf">One-paragraph summaries (PDF)</a><a class="btn" href="{REPO}">Source repository</a><a class="btn" href="{ARXIV_AUTHOR}">arXiv listing</a></p>
+  available. Where a paper is also on arXiv or Hexagon, its page links there.</p>
+  <p class="actions"><a class="btn primary" href="overview.pdf">One-paragraph summaries (PDF)</a><a class="btn" href="{REPO}">Source repository</a><a class="btn" href="{ARXIV_AUTHOR}">arXiv listing</a>{hexlink(HEXAGON_AUTHOR, "Hexagon listing", "btn")}</p>
   <p class="toc">{toc}{' <a href="#notes">Notes</a>' if notes else ''}</p>
   <p class="chips view" role="group" aria-label="List papers">View:<button class="chip" data-view="by-subject" aria-pressed="true">By subject</button><button class="chip" data-view="by-date" aria-pressed="false">By date</button></p>
 </header>
