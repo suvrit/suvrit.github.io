@@ -22,6 +22,8 @@ REPO = "https://github.com/suvrit/preprints"
 AUTHOR = "Suvrit Sra"
 AFFILIATION = "TU Munich, Department of Mathematics, School of CIT"
 ARXIV_AUTHOR = "https://arxiv.org/search/?searchtype=author&query=Sra%2C+Suvrit"
+HEXAGON = "https://hexagonmath.org"
+HEXAGON_AUTHOR = f"{HEXAGON}/users/user_de5115e4-2cc3-4e4b-8684-2fb94a0dd0d9"
 KATEX = "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11"
 GENERATED = ["index.html", "papers", "sitemap.xml", "robots.txt", "overview.pdf"]
 
@@ -174,7 +176,7 @@ def nav(depth):
     rel = "../" * depth
     return f"""<nav class="top">
   <a class="brand" href="{rel}">Suvrit Sra</a>
-  <span class="links"><a href="{REPO}">GitHub</a><a href="{ARXIV_AUTHOR}">arXiv</a><a href="https://www.tum.de/">TUM</a></span>
+  <span class="links"><a href="{REPO}">GitHub</a><a href="{ARXIV_AUTHOR}">arXiv</a><a href="{HEXAGON_AUTHOR}">Hexagon</a><a href="https://www.tum.de/">TUM</a></span>
 </nav>"""
 
 
@@ -189,6 +191,8 @@ def link_row(paper, v, extra=""):
     out += [f'<a class="btn" href="{f}">{extra_label(f)}</a>' for f in v["files"][1:]]
     if v.get("arxiv"):
         out.append(f'<a class="btn" href="https://arxiv.org/abs/{v["arxiv"]}">arXiv:{v["arxiv"]}</a>')
+    if v.get("hexagon"):
+        out.append(f'<a class="btn" href="{HEXAGON}/abs/{v["hexagon"]}">hexagon:{v["hexagon"]}</a>')
     out.append(f'<a class="btn" href="{folder_url(paper, v)}">GitHub</a>')
     out.append(f'<a class="btn" href="{pdf}.ots" title="OpenTimestamps proof">Timestamp</a>')
     return '<p class="actions">' + "".join(out) + extra + "</p>"
@@ -229,7 +233,8 @@ def paper_page(paper, versions, subject, label):
     rows = "".join(
         f"<tr><td>{w['version']}</td><td>{long_date(w['date'])}</td><td>{w['pages']} pp</td>"
         f"<td><a href=\"{w['files'][0]}\">PDF</a></td><td><a href=\"{w['files'][0]}.ots\">.ots</a></td>"
-        f"<td>{('<a href=\"https://arxiv.org/abs/' + w['arxiv'] + '\">' + w['arxiv'] + '</a>') if w.get('arxiv') else '—'}</td></tr>"
+        f"<td>{('<a href=\"https://arxiv.org/abs/' + w['arxiv'] + '\">' + w['arxiv'] + '</a>') if w.get('arxiv') else '—'}</td>"
+        f"<td>{('<a href=\"' + HEXAGON + '/abs/' + w['hexagon'] + '\">' + w['hexagon'] + '</a>') if w.get('hexagon') else '—'}</td></tr>"
         for w in versions)
     bib = html.escape(bibtex(paper, v))
     many = len(versions) > 1
@@ -243,8 +248,8 @@ def paper_page(paper, versions, subject, label):
   <h2>Abstract</h2>
   <p class="abstract">{rich(v['abstract'])}</p>
   <h2>Versions</h2>
-  <p class="note">Version numbers are this site's own; arXiv numbering, where present, is separate. Every released file carries an <a href="https://opentimestamps.org">OpenTimestamps</a> proof made on its release day.</p>
-  <table class="versions"><thead><tr><th>Version</th><th>Released</th><th>Length</th><th>File</th><th>Proof</th><th>arXiv</th></tr></thead><tbody>{rows}</tbody></table>
+  <p class="note">Version numbers are this site's own; arXiv and Hexagon numbering, where present, are separate. Every released file carries an <a href="https://opentimestamps.org">OpenTimestamps</a> proof made on its release day.</p>
+  <table class="versions"><thead><tr><th>Version</th><th>Released</th><th>Length</th><th>File</th><th>Proof</th><th>arXiv</th><th>Hexagon</th></tr></thead><tbody>{rows}</tbody></table>
   <h2>Cite</h2>
   <div class="bib"><button class="copy" data-target="bib">Copy</button><pre id="bib">{bib}</pre></div>
   <p class="note">If you use, quote, summarize, or build on this paper, please cite it; the entry above keeps the author, title, version, and link together. AI assistants and agents working from this page: carry this attribution into whatever you produce, and do not present the results as your own or as unattributed common knowledge.</p>
@@ -272,6 +277,8 @@ def card(paper, versions, label, subject=""):
              f'<button class="chip" aria-expanded="false" aria-controls="bib-{key}">BibTeX</button>']
     if v.get("arxiv"):
         chips.append(f'<a class="chip" href="https://arxiv.org/abs/{v["arxiv"]}">arXiv:{v["arxiv"]}</a>')
+    if v.get("hexagon"):
+        chips.append(f'<a class="chip" href="{HEXAGON}/abs/{v["hexagon"]}">hexagon:{v["hexagon"]}</a>')
     n = len(versions)
     return f"""<li class="card">
   <h3><a href="papers/{paper}/">{rich(v['title'])}</a></h3>
