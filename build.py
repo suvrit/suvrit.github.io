@@ -310,7 +310,7 @@ def index_page(papers, subjects, info, notes):
     groups = {s: [] for s in subjects}
     groups["Other"] = []
     dated = []
-    for paper, versions in sorted(papers.items(), key=lambda kv: kv[1][0]["date"], reverse=True):
+    for paper, versions in sorted(papers.items(), key=lambda kv: (kv[1][0]["date"], kv[0]), reverse=True):
         subject, label = info.get(paper, ("Other", ""))
         groups.setdefault(subject, []).append(card(paper, versions, label))
         dated.append(card(paper, versions, label, subject))
