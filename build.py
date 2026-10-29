@@ -40,6 +40,12 @@ def version_number(v):
     return int(v["version"].lstrip("v"))
 
 
+def newest(versions, key):
+    """The latest arXiv or Hexagon id among `versions` (newest first), so that a version
+    released only on this site keeps the paper-level link to an earlier one."""
+    return next((w[key] for w in versions if w.get(key)), None)
+
+
 def load_papers(root):
     papers = {}
     for vj in sorted((root / "preprints").glob("*/versions.json")):
@@ -194,14 +200,15 @@ def extra_label(f):
     return "Supplement" if "supplement" in f else html.escape(f)
 
 
-def link_row(paper, v, extra=""):
+def link_row(paper, versions, extra=""):
+    v = versions[0]
     pdf = v["files"][0]
     out = [f'<a class="btn primary" href="{pdf}">PDF</a>']
     out += [f'<a class="btn" href="{f}">{extra_label(f)}</a>' for f in v["files"][1:]]
-    if v.get("arxiv"):
-        out.append(f'<a class="btn" href="https://arxiv.org/abs/{v["arxiv"]}">arXiv:{v["arxiv"]}</a>')
-    if v.get("hexagon"):
-        out.append(hexlink(f'{HEXAGON}/abs/{v["hexagon"]}', f'hexagon:{v["hexagon"]}', "btn"))
+    if a := newest(versions, "arxiv"):
+        out.append(f'<a class="btn" href="https://arxiv.org/abs/{a}">arXiv:{a}</a>')
+    if h := newest(versions, "hexagon"):
+        out.append(hexlink(f'{HEXAGON}/abs/{h}', f'hexagon:{h}', "btn"))
     out.append(f'<a class="btn" href="{folder_url(paper, v)}">GitHub</a>')
     out.append(f'<a class="btn" href="{pdf}.ots" title="OpenTimestamps proof">Timestamp</a>')
     return '<p class="actions">' + "".join(out) + extra + "</p>"
@@ -231,8 +238,8 @@ def paper_page(paper, versions, subject, label):
              ("citation_abstract_html_url", url),
              ("citation_language", "en"),
              ("citation_abstract", abstract)]
-    if v.get("arxiv"):
-        meta.append(("citation_arxiv_id", re.sub(r"v\d+$", "", v["arxiv"])))
+    if newest(versions, "arxiv"):
+        meta.append(("citation_arxiv_id", re.sub(r"v\d+$", "", newest(versions, "arxiv"))))
     if v.get("zenodo"):
         meta.append(("citation_doi", v["zenodo"]["doi"]))
     meta += [("og:title", title), ("og:type", "article"), ("og:url", url), ("og:description", abstract)]
@@ -253,7 +260,7 @@ def paper_page(paper, versions, subject, label):
   <h1>{rich(v['title'])}</h1>
   <p class="byline">{html.escape(', '.join(authors))} <span class="affil">· {html.escape(AFFILIATION)}</span></p>
   <p class="meta">Version {v['version']} · released {long_date(v['date'])} · {v['pages']} pages{' · ' + rich(label) if label else ''}</p>
-  {link_row(paper, v)}
+  {link_row(paper, versions)}
   <h2>Abstract</h2>
   <p class="abstract">{rich(v['abstract'])}</p>
   <h2>Versions</h2>
@@ -284,10 +291,10 @@ def card(paper, versions, label, subject=""):
              *[f'<a class="chip" href="papers/{paper}/{f}">{extra_label(f)}</a>' for f in v["files"][1:]],
              f'<button class="chip" aria-expanded="false" aria-controls="abs-{key}">Abstract</button>',
              f'<button class="chip" aria-expanded="false" aria-controls="bib-{key}">BibTeX</button>']
-    if v.get("arxiv"):
-        chips.append(f'<a class="chip" href="https://arxiv.org/abs/{v["arxiv"]}">arXiv:{v["arxiv"]}</a>')
-    if v.get("hexagon"):
-        chips.append(hexlink(f'{HEXAGON}/abs/{v["hexagon"]}', f'hexagon:{v["hexagon"]}', "chip"))
+    if a := newest(versions, "arxiv"):
+        chips.append(f'<a class="chip" href="https://arxiv.org/abs/{a}">arXiv:{a}</a>')
+    if h := newest(versions, "hexagon"):
+        chips.append(hexlink(f'{HEXAGON}/abs/{h}', f'hexagon:{h}', "chip"))
     n = len(versions)
     return f"""<li class="card">
   <h3><a href="papers/{paper}/">{rich(v['title'])}</a></h3>
