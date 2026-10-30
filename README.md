@@ -17,5 +17,13 @@ git add -A && git commit -m "Rebuild" && git push
 ```
 
 Hand-written: `build.py`, `assets/style.css`, `notes/`. Everything else at the
-root and under `papers/` is generated. The MIT licence covers the site code;
+root and under `papers/` is generated. The exception inside `notes/` is
+`notes/countexes/`: one PDF per case of
+[count-ex-machina](https://github.com/suvrit/count-ex-machina) and an
+`index.json` listing them, written by that repository (clone expected next to
+this one):
+
+```sh
+cd ../count-ex-machina && .venv/bin/python tools/notes.py --copy-to ../suvrit.github.io/notes/countexes
+``` The MIT licence covers the site code;
 the papers are the author's own.

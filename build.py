@@ -306,7 +306,19 @@ def card(paper, versions, label, subject=""):
 </li>"""
 
 
-def index_page(papers, subjects, info, notes):
+def countex_list(countexes):
+    rows = "".join(
+        f'<li><a href="notes/countexes/{html.escape(n["pdf"])}">{html.escape(n["title"])}</a> '
+        f'<span class="meta">found by {html.escape("; ".join(f["model"] + " (" + f["date"] + ")" for f in n["found_by"]))}'
+        f' · <a class="nowrap" href="{html.escape(n["code"])}">code &amp; certificate</a></span></li>'
+        for n in countexes)
+    return (f'<h3>Countexes</h3><p class="note">One short note per case of the <a href="{COUNTEX_REPO}">Count ex '
+            f'Machina</a> archive of counterexamples (companion paper <a href="https://arxiv.org/abs/2608.29595">'
+            f'arXiv:2608.29595</a>). Each quotes the statement as posed, gives the counterexample with its proof, '
+            f'and links to the code and certificate that recompute it.</p><ul class="plain">{rows}</ul>')
+
+
+def index_page(papers, subjects, info, notes, countexes):
     groups = {s: [] for s in subjects}
     groups["Other"] = []
     dated = []
@@ -322,10 +334,11 @@ def index_page(papers, subjects, info, notes):
     count = len(papers)
     latest = max(v[0]["date"] for v in papers.values())
     notes_html = ""
-    if notes:
+    if notes or countexes:
         items = "".join(f'<li><a href="{href}">{html.escape(t)}</a> <span class="meta">{html.escape(d)}</span></li>'
                         for t, href, d in notes)
-        notes_html = f'<section id="notes"><h2>Notes</h2><ul class="plain">{items}</ul></section>'
+        notes_html = (f'<section id="notes"><h2>Notes/Countexes</h2><ul class="plain">{items}</ul>'
+                      f'{countex_list(countexes) if countexes else ""}</section>')
     head = f'<link rel="canonical" href="{SITE}/">\n<meta property="og:title" content="Research Preprints · Suvrit Sra">\n'
     body = f"""{nav(0)}
 <header class="hero">
@@ -335,7 +348,7 @@ def index_page(papers, subjects, info, notes):
   <a href="https://opentimestamps.org">OpenTimestamps</a> on the day it appears. Every version stays
   available. Where a paper is also on arXiv or Hexagon, its page links there.</p>
   <p class="actions"><a class="btn primary" href="overview.pdf">One-paragraph summaries (PDF)</a><a class="btn" href="{REPO}">Source repository</a><a class="btn" href="{ARXIV_AUTHOR}">arXiv listing</a>{hexlink(HEXAGON_AUTHOR, "Hexagon listing", "btn")}</p>
-  <p class="toc">{toc}{' <a href="#notes">Notes</a>' if notes else ''}</p>
+  <p class="toc">{toc}{' <a href="#notes">Notes/Countexes</a>' if notes or countexes else ''}</p>
   <p class="chips view" role="group" aria-label="List papers">View:<button class="chip" data-view="by-subject" aria-pressed="true">By subject</button><button class="chip" data-view="by-date" aria-pressed="false">By date</button></p>
 </header>
 <div id="by-subject">{sections}</div>
@@ -371,6 +384,10 @@ if(location.hash==='#by-date'||saved==='by-date'&&!anchor?.closest('#by-subject'
 
 NOTES = [("Matrix Spencer, twice: a comparison of arXiv:2608.28816 and arXiv:2609.15025",
           "notes/ms-note.pdf", "15 September 2026")]
+# One note per count-ex-machina case, with this index, copied in by that
+# repository's `python tools/notes.py --copy-to <this repo>/notes/countexes`.
+COUNTEXES = HERE / "notes" / "countexes" / "index.json"
+COUNTEX_REPO = "https://github.com/suvrit/count-ex-machina"
 
 
 def build(root):
@@ -392,7 +409,8 @@ def build(root):
         subject, label = info.get(paper, ("Other", ""))
         (d / "index.html").write_text(paper_page(paper, versions, subject, label))
         urls.append((f"{SITE}/papers/{paper}/", versions[0]["date"]))
-    (HERE / "index.html").write_text(index_page(papers, subjects, info, NOTES))
+    countexes = json.loads(COUNTEXES.read_text()) if COUNTEXES.exists() else []
+    (HERE / "index.html").write_text(index_page(papers, subjects, info, NOTES, countexes))
     shutil.copy2(root / "overview.pdf", HERE / "overview.pdf")
     (HERE / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

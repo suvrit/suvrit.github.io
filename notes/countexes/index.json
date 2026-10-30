@@ -1,0 +1,275 @@
+[
+  {
+    "id": "aim-problems",
+    "title": "Borcea–Brändén AIM problems",
+    "pdf": "aim-problems.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/aim-problems",
+    "found_by": [
+      {
+        "model": "GPT-5 (Pro)",
+        "date": "2026-01-10"
+      },
+      {
+        "model": "GPT-5.6 (Pro)",
+        "date": "2026-07-30"
+      },
+      {
+        "model": "bugfixed by Opus 5",
+        "date": "2026-08-10"
+      }
+    ],
+    "results": [
+      "aim-problem-35",
+      "aim-problem-38",
+      "aim-problem-36",
+      "aim-problem-37"
+    ],
+    "appendix": false
+  },
+  {
+    "id": "macdonald-schur-convexity",
+    "title": "Schur-convexity of a ratio of Macdonald polynomials",
+    "pdf": "macdonald-schur-convexity.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/macdonald-schur-convexity",
+    "found_by": [
+      {
+        "model": "GPT-5.6 (Pro)",
+        "date": "2026-05-14"
+      }
+    ],
+    "results": [
+      "macdonald-schur-convexity"
+    ],
+    "appendix": false
+  },
+  {
+    "id": "theta-derivative-log-concavity",
+    "title": "Log-concavity of all Derivatives of the Jacobi-theta kernel",
+    "pdf": "theta-derivative-log-concavity.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/theta-derivative-log-concavity",
+    "found_by": [
+      {
+        "model": "GPT-5.5 (Pro)",
+        "date": "2026-02-22"
+      }
+    ],
+    "results": [
+      "theta-derivative-log-concavity"
+    ],
+    "appendix": false
+  },
+  {
+    "id": "variance-only-matrix-discrepancy",
+    "title": "Variance-sensitive Matrix Spencer",
+    "pdf": "variance-only-matrix-discrepancy.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/variance-only-matrix-discrepancy",
+    "found_by": [
+      {
+        "model": "GPT-5.5 (Pro)",
+        "date": "2026-05-24"
+      }
+    ],
+    "results": [
+      "variance-only-matrix-discrepancy"
+    ],
+    "appendix": false
+  },
+  {
+    "id": "rank-two-mixed-norm",
+    "title": "A mixed-norm Cauchy–Schwarz question of Sah, Sawhney, Stoner and Zhao",
+    "pdf": "rank-two-mixed-norm.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/rank-two-mixed-norm",
+    "found_by": [
+      {
+        "model": "Opus 5",
+        "date": "2026-08"
+      },
+      {
+        "model": "GPT-5.6 Sol (Pro)",
+        "date": "2026-07-13"
+      }
+    ],
+    "results": [
+      "mixed-norm-general-s",
+      "yufei-psd"
+    ],
+    "appendix": false
+  },
+  {
+    "id": "quantum-coupon-collector",
+    "title": "Quantum coupon collection: an alternating sum of inverses",
+    "pdf": "quantum-coupon-collector.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/quantum-coupon-collector",
+    "found_by": [
+      {
+        "model": "GPT Pro",
+        "date": "2026-02-16"
+      }
+    ],
+    "results": [
+      "quantum-coupon-collector"
+    ],
+    "appendix": false
+  },
+  {
+    "id": "odonnell-matrix-conjecture",
+    "title": "Ryan O'Donnell's matrix conjecture",
+    "pdf": "odonnell-matrix-conjecture.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/odonnell-matrix-conjecture",
+    "found_by": [
+      {
+        "model": "GPT-5.6 Pro",
+        "date": "2026-08"
+      }
+    ],
+    "results": [
+      "odonnell-matrix-conjecture"
+    ],
+    "appendix": false
+  },
+  {
+    "id": "lyons-dpp-entropy-concavity",
+    "title": "Commuting counterexamples to determinantal entropy concavity",
+    "pdf": "lyons-dpp-entropy-concavity.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/lyons-dpp-entropy-concavity",
+    "found_by": [
+      {
+        "model": "GPT Astra (Pro)",
+        "date": "2026-10-30"
+      }
+    ],
+    "results": [
+      "lyons-dpp-entropy-concavity"
+    ],
+    "appendix": false
+  },
+  {
+    "id": "courtade-volume-conjecture",
+    "title": "Courtade's volume conjecture for Minkowski sums is false",
+    "pdf": "courtade-volume-conjecture.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/courtade-volume-conjecture",
+    "found_by": [
+      {
+        "model": "Suvrit Sra, by hand",
+        "date": "2022-05"
+      }
+    ],
+    "results": [
+      "courtade-volume-conjecture"
+    ],
+    "appendix": true
+  },
+  {
+    "id": "dpp-feasible-step",
+    "title": "Feasible Picard steps for DPP likelihood",
+    "pdf": "dpp-feasible-step.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/dpp-feasible-step",
+    "found_by": [
+      {
+        "model": "GPT-5.6",
+        "date": "2026-08"
+      }
+    ],
+    "results": [
+      "dpp-feasible-step"
+    ],
+    "appendix": true
+  },
+  {
+    "id": "lorentzian-jensen",
+    "title": "Log-volume midpoint gap and its Lorentzian generalization",
+    "pdf": "lorentzian-jensen.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/lorentzian-jensen",
+    "found_by": [
+      {
+        "model": "GPT-5.6 Pro",
+        "date": "2026-07-31"
+      }
+    ],
+    "results": [
+      "log-volume-distance",
+      "lorentzian-jensen"
+    ],
+    "appendix": true
+  },
+  {
+    "id": "sdd-nystrom-diminishing-returns",
+    "title": "Strict diagonal dominance does not ensure diminishing Nyström error reductions",
+    "pdf": "sdd-nystrom-diminishing-returns.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/sdd-nystrom-diminishing-returns",
+    "found_by": [
+      {
+        "model": "OpenAI Codex",
+        "date": "2026-08"
+      }
+    ],
+    "results": [
+      "sdd-nystrom-diminishing-returns"
+    ],
+    "appendix": true
+  },
+  {
+    "id": "osi-sketch-and-solve",
+    "title": "An oblivious subspace injection need not give relative-error sketch-and-solve",
+    "pdf": "osi-sketch-and-solve.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/osi-sketch-and-solve",
+    "found_by": [
+      {
+        "model": "OpenAI Codex",
+        "date": "2026-08"
+      }
+    ],
+    "results": [
+      "osi-sketch-and-solve"
+    ],
+    "appendix": true
+  },
+  {
+    "id": "hamiltonian-nepv-identity",
+    "title": "Failure of the proposed Hamiltonian NEPv Rayleigh identity",
+    "pdf": "hamiltonian-nepv-identity.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/hamiltonian-nepv-identity",
+    "found_by": [
+      {
+        "model": "OpenAI Codex",
+        "date": "2026-08"
+      }
+    ],
+    "results": [
+      "hamiltonian-nepv-identity"
+    ],
+    "appendix": true
+  },
+  {
+    "id": "qrcp-orthonormal-greedy",
+    "title": "Exact QRCP can miss the orthonormal-row conditioning bound",
+    "pdf": "qrcp-orthonormal-greedy.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/qrcp-orthonormal-greedy",
+    "found_by": [
+      {
+        "model": "OpenAI Codex",
+        "date": "2026-08"
+      }
+    ],
+    "results": [
+      "qrcp-orthonormal-greedy"
+    ],
+    "appendix": true
+  },
+  {
+    "id": "hermitian-exponential-determinant",
+    "title": "A determinant inequality for sums of Hermitian exponentials",
+    "pdf": "hermitian-exponential-determinant.pdf",
+    "code": "https://github.com/suvrit/count-ex-machina/tree/main/counterexamples/hermitian-exponential-determinant",
+    "found_by": [
+      {
+        "model": "GPT Astra (Pro)",
+        "date": "2026-10-30"
+      }
+    ],
+    "results": [
+      "hermitian-exponential-determinant"
+    ],
+    "appendix": true
+  }
+]
