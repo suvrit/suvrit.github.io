@@ -11,6 +11,7 @@ Everything the script writes is listed in GENERATED; rerun after every release.
 """
 import argparse
 import datetime
+import hashlib
 import html
 import json
 import re
@@ -32,6 +33,9 @@ KATEX = "https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.11"
 GENERATED = ["index.html", "papers", "sitemap.xml", "robots.txt", "overview.pdf"]
 
 HERE = Path(__file__).resolve().parent
+# The stylesheet's URL carries a hash of its content, so a browser holding the
+# old file (GitHub Pages lets it cache for ten minutes) fetches the new one at once.
+CSS_VERSION = hashlib.sha256((HERE / "assets" / "style.css").read_bytes()).hexdigest()[:8]
 
 
 # ---------------------------------------------------------------- data
@@ -168,7 +172,7 @@ def page(title, body, head="", depth=0, description=""):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <link rel="stylesheet" href="{KATEX}/katex.min.css">
-<link rel="stylesheet" href="{rel}assets/style.css">
+<link rel="stylesheet" href="{rel}assets/style.css?v={CSS_VERSION}">
 </head>
 <body>
 <div class="wrap">
@@ -329,7 +333,7 @@ def countex_table(countexes):
         rows.append(
             f'<tr><td class="no">{no}</td>'
             f'<td class="what"><a class="title" href="notes/countexes/{html.escape(n["pdf"])}">{html.escape(n["title"])}</a>'
-            f'{f"<span class=posed>Posed by {html.escape(posed)}</span>" if posed else ""}</td>'
+            f'{f" <span class=posed>Posed by {html.escape(posed)}</span>" if posed else ""}</td>'
             f'<td class="found">{found}</td><td class="cert">{tags}</td>'
             f'<td class="links"><a class="chip" href="notes/countexes/{html.escape(n["pdf"])}">PDF</a>'
             f'<a class="chip" href="{html.escape(n["code"])}">Code</a></td></tr>')

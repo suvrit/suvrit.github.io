@@ -90,19 +90,22 @@ ul.plain { padding-left: 1.1em; }
 ul.plain li { margin: 0.4em 0; }
 #notes h3 { margin: 1.6em 0 0.3em; }
 
-/* The countex table: one row per count-ex-machina note, numbered counting down. */
-table.countex {
-  width: 100%; margin-top: 1em; border-collapse: separate; border-spacing: 0;
-  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
-}
+/* The countex table: one row per count-ex-machina note, numbered counting down.
+   Each row is a tile like a paper .card: the cells carry the surface and the
+   border, the first and last cell the rounded corners, and border-spacing the
+   gap between tiles. */
+table.countex { width: 100%; margin-top: 0.4em; border-collapse: separate; border-spacing: 0 10px; }
 table.countex th {
-  text-align: left; padding: 10px 14px; color: var(--muted); font-weight: 500; font-size: 0.76rem;
-  text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--line); background: var(--bg);
+  text-align: left; padding: 6px 14px 0; color: var(--muted); font-weight: 500; font-size: 0.76rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
 }
-table.countex td { padding: 13px 14px; vertical-align: top; border-top: 1px solid var(--line); }
-table.countex tbody tr:first-child td { border-top: 0; }
-table.countex tbody tr { transition: background 0.15s; }
-table.countex tbody tr:hover { background: var(--accent-soft); }
+table.countex td {
+  padding: 14px; vertical-align: top; background: var(--surface);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: border-color 0.15s;
+}
+table.countex td:first-child { border-left: 1px solid var(--line); border-radius: 12px 0 0 12px; }
+table.countex td:last-child { border-right: 1px solid var(--line); border-radius: 0 12px 12px 0; }
+table.countex tbody tr:hover td { border-color: var(--accent); }
 table.countex .no {
   width: 3.4em; text-align: right; padding-right: 6px; font-family: var(--serif); font-weight: 600;
   font-size: 1.45rem; line-height: 1.1; color: var(--accent); font-variant-numeric: tabular-nums;
@@ -155,12 +158,16 @@ footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line);
   nav.top .links a { margin-left: 12px; }
   table.countex thead { display: none; }
   table.countex, table.countex tbody { display: block; }
+  /* On a phone the row itself is the tile; its cells are bare. */
   table.countex tbody tr {
     display: grid; grid-template-columns: 2.4em auto minmax(0, 1fr); column-gap: 10px;
-    padding: 12px 14px; border-top: 1px solid var(--line);
+    margin-top: 10px; padding: 12px 14px; background: var(--surface);
+    border: 1px solid var(--line); border-radius: 12px; transition: border-color 0.15s;
   }
-  table.countex tbody tr:first-child { border-top: 0; }
-  table.countex td { display: block; padding: 0; border: 0; grid-column: 2 / span 2; }
+  table.countex tbody tr:hover { border-color: var(--accent); }
+  table.countex td, table.countex td:first-child, table.countex td:last-child {
+    display: block; padding: 0; border: 0; border-radius: 0; background: none; grid-column: 2 / span 2;
+  }
   table.countex td.no, table.countex td.found, table.countex td.cert, table.countex td.links { width: auto; text-align: left; }
   table.countex td.no { grid-column: 1; grid-row: 1 / span 3; padding: 0; font-size: 1.3rem; }
   table.countex td.found, table.countex td.cert, table.countex td.links { margin-top: 6px; }
