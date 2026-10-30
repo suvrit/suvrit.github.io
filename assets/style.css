@@ -89,7 +89,42 @@ button.chip { border: 0; font-family: inherit; line-height: inherit; cursor: poi
 ul.plain { padding-left: 1.1em; }
 ul.plain li { margin: 0.4em 0; }
 #notes h3 { margin: 1.6em 0 0.3em; }
-.nowrap { white-space: nowrap; }
+
+/* The countex table: one row per count-ex-machina note, numbered counting down. */
+table.countex {
+  width: 100%; margin-top: 1em; border-collapse: separate; border-spacing: 0;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+}
+table.countex th {
+  text-align: left; padding: 10px 14px; color: var(--muted); font-weight: 500; font-size: 0.76rem;
+  text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--line); background: var(--bg);
+}
+table.countex td { padding: 13px 14px; vertical-align: top; border-top: 1px solid var(--line); }
+table.countex tbody tr:first-child td { border-top: 0; }
+table.countex tbody tr { transition: background 0.15s; }
+table.countex tbody tr:hover { background: var(--accent-soft); }
+table.countex .no {
+  width: 3.4em; text-align: right; padding-right: 6px; font-family: var(--serif); font-weight: 600;
+  font-size: 1.45rem; line-height: 1.1; color: var(--accent); font-variant-numeric: tabular-nums;
+}
+table.countex th.no { font-family: var(--sans); font-size: 0.76rem; line-height: inherit; color: var(--muted); }
+table.countex .title { font-family: var(--serif); font-weight: 600; font-size: 1.02rem; color: var(--ink); line-height: 1.3; }
+table.countex .title:hover { color: var(--accent); }
+table.countex .posed { display: block; margin-top: 0.25em; color: var(--muted); font-size: 0.85rem; }
+table.countex .found { width: 11.5em; font-size: 0.86rem; }
+table.countex .finder { display: block; }
+table.countex .finder + .finder { margin-top: 0.3em; }
+table.countex .when { display: block; color: var(--muted); font-size: 0.8rem; }
+table.countex .cert { width: 6em; }
+table.countex .links { width: 7.4em; white-space: nowrap; text-align: right; }
+table.countex .links .chip + .chip { margin-left: 6px; }
+.tag {
+  display: inline-block; margin: 0 4px 4px 0; padding: 2px 8px; border-radius: 999px;
+  font-size: 0.74rem; font-weight: 500; letter-spacing: 0.02em;
+}
+.tag.exact { background: var(--accent-soft); color: var(--accent); }
+.tag.interval { background: var(--chip); color: var(--muted); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .paper { padding-top: 28px; }
 .paper .byline { margin: 0; font-size: 1.02rem; }
@@ -118,4 +153,21 @@ footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line);
   table.versions { font-size: 0.84rem; }
   table.versions th:nth-child(3), table.versions td:nth-child(3) { display: none; }
   nav.top .links a { margin-left: 12px; }
+  table.countex thead { display: none; }
+  table.countex, table.countex tbody { display: block; }
+  table.countex tbody tr {
+    display: grid; grid-template-columns: 2.4em auto minmax(0, 1fr); column-gap: 10px;
+    padding: 12px 14px; border-top: 1px solid var(--line);
+  }
+  table.countex tbody tr:first-child { border-top: 0; }
+  table.countex td { display: block; padding: 0; border: 0; grid-column: 2 / span 2; }
+  table.countex td.no, table.countex td.found, table.countex td.cert, table.countex td.links { width: auto; text-align: left; }
+  table.countex td.no { grid-column: 1; grid-row: 1 / span 3; padding: 0; font-size: 1.3rem; }
+  table.countex td.found, table.countex td.cert, table.countex td.links { margin-top: 6px; }
+  /* The certificate tag and the PDF/Code chips share the last line. */
+  table.countex td.cert { grid-column: 2; grid-row: 3; }
+  table.countex td.links { grid-column: 3; grid-row: 3; }
+  table.countex .finder { display: inline; }
+  table.countex .finder + .finder::before { content: " · "; color: var(--muted); }
+  table.countex .when { display: inline; margin-left: 0.3em; }
 }

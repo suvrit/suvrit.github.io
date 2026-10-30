@@ -306,16 +306,40 @@ def card(paper, versions, label, subject=""):
 </li>"""
 
 
-def countex_list(countexes):
-    rows = "".join(
-        f'<li><a href="notes/countexes/{html.escape(n["pdf"])}">{html.escape(n["title"])}</a> '
-        f'<span class="meta">found by {html.escape("; ".join(f["model"] + " (" + f["date"] + ")" for f in n["found_by"]))}'
-        f' · <a class="nowrap" href="{html.escape(n["code"])}">code &amp; certificate</a></span></li>'
-        for n in countexes)
+def short_date(d):
+    """'2026-10-30' -> '30 Oct 2026'; a month-only '2026-08' -> 'Aug 2026'."""
+    y, m, *day = d.split("-")
+    month = datetime.date(int(y), int(m), 1).strftime("%b")
+    return f"{int(day[0])} {month} {y}" if day else f"{month} {y}"
+
+
+def countex_table(countexes):
+    # Numbered by when each counterexample was first found, oldest = 1, and
+    # listed newest first, so the list counts down.  Ties (month-only dates,
+    # same-day finds) keep the archive's own ledger order, which index.json has.
+    ranked = sorted(enumerate(countexes), key=lambda p: (min(f["date"] for f in p[1]["found_by"]), p[0]))
+    rows = []
+    for no, (_, n) in reversed(list(enumerate(ranked, 1))):
+        found = "".join(f'<span class="finder">{html.escape(f["model"])}'
+                        f' <span class="when">{short_date(f["date"])}</span></span>'
+                        for f in sorted(n["found_by"], key=lambda f: f["date"]))
+        posed = "; ".join(n["posed_by"])
+        tags = "".join(f'<span class="tag {"exact" if lv == "exact" else "interval"}">'
+                       f'{"exact" if lv == "exact" else "interval"}</span>' for lv in n["certificate_levels"])
+        rows.append(
+            f'<tr><td class="no">{no}</td>'
+            f'<td class="what"><a class="title" href="notes/countexes/{html.escape(n["pdf"])}">{html.escape(n["title"])}</a>'
+            f'{f"<span class=posed>Posed by {html.escape(posed)}</span>" if posed else ""}</td>'
+            f'<td class="found">{found}</td><td class="cert">{tags}</td>'
+            f'<td class="links"><a class="chip" href="notes/countexes/{html.escape(n["pdf"])}">PDF</a>'
+            f'<a class="chip" href="{html.escape(n["code"])}">Code</a></td></tr>')
     return (f'<h3>Countexes</h3><p class="note">One short note per case of the <a href="{COUNTEX_REPO}">Count ex '
             f'Machina</a> archive of counterexamples (companion paper <a href="https://arxiv.org/abs/2608.29595">'
             f'arXiv:2608.29595</a>). Each quotes the statement as posed, gives the counterexample with its proof, '
-            f'and links to the code and certificate that recompute it.</p><ul class="plain">{rows}</ul>')
+            f'and links to the code and certificate that recompute it. Numbered by when the counterexample was '
+            f'found, newest first.</p>'
+            f'<table class="countex"><thead><tr><th class="no">No.</th><th>Counterexample</th><th>Found by</th>'
+            f'<th>Certificate</th><th><span class="sr">Links</span></th></tr></thead><tbody>{"".join(rows)}</tbody></table>')
 
 
 def index_page(papers, subjects, info, notes, countexes):
@@ -338,7 +362,7 @@ def index_page(papers, subjects, info, notes, countexes):
         items = "".join(f'<li><a href="{href}">{html.escape(t)}</a> <span class="meta">{html.escape(d)}</span></li>'
                         for t, href, d in notes)
         notes_html = (f'<section id="notes"><h2>Notes/Countexes</h2><ul class="plain">{items}</ul>'
-                      f'{countex_list(countexes) if countexes else ""}</section>')
+                      f'{countex_table(countexes) if countexes else ""}</section>')
     head = f'<link rel="canonical" href="{SITE}/">\n<meta property="og:title" content="Research Preprints · Suvrit Sra">\n'
     body = f"""{nav(0)}
 <header class="hero">

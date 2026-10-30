@@ -18,6 +18,12 @@
         "date": "2026-08-10"
       }
     ],
+    "posed_by": [
+      "Borcea and Brändén"
+    ],
+    "certificate_levels": [
+      "exact"
+    ],
     "results": [
       "aim-problem-35",
       "aim-problem-38",
@@ -37,6 +43,12 @@
         "date": "2026-05-14"
       }
     ],
+    "posed_by": [
+      "McSwiggen and Sahi"
+    ],
+    "certificate_levels": [
+      "exact"
+    ],
     "results": [
       "macdonald-schur-convexity"
     ],
@@ -53,6 +65,12 @@
         "date": "2026-02-22"
       }
     ],
+    "posed_by": [
+      "Coffey and Csordas"
+    ],
+    "certificate_levels": [
+      "computer-assisted"
+    ],
     "results": [
       "theta-derivative-log-concavity"
     ],
@@ -68,6 +86,12 @@
         "model": "GPT-5.5 (Pro)",
         "date": "2026-05-24"
       }
+    ],
+    "posed_by": [
+      "A. S. Bandeira"
+    ],
+    "certificate_levels": [
+      "exact"
     ],
     "results": [
       "variance-only-matrix-discrepancy"
@@ -89,6 +113,13 @@
         "date": "2026-07-13"
       }
     ],
+    "posed_by": [
+      "A. Sah et al, and put to S. Sra by Y. Zhao in private communication, May 2018"
+    ],
+    "certificate_levels": [
+      "exact",
+      "computer-assisted"
+    ],
     "results": [
       "mixed-norm-general-s",
       "yufei-psd"
@@ -106,6 +137,12 @@
         "date": "2026-02-16"
       }
     ],
+    "posed_by": [
+      "S. Sra"
+    ],
+    "certificate_levels": [
+      "exact"
+    ],
     "results": [
       "quantum-coupon-collector"
     ],
@@ -121,6 +158,12 @@
         "model": "GPT-5.6 Pro",
         "date": "2026-08"
       }
+    ],
+    "posed_by": [
+      "R. O'Donnell and J. Wright"
+    ],
+    "certificate_levels": [
+      "exact"
     ],
     "results": [
       "odonnell-matrix-conjecture"
@@ -138,6 +181,12 @@
         "date": "2026-10-30"
       }
     ],
+    "posed_by": [
+      "Russell Lyons"
+    ],
+    "certificate_levels": [
+      "computer-assisted"
+    ],
     "results": [
       "lyons-dpp-entropy-concavity"
     ],
@@ -153,6 +202,12 @@
         "model": "Suvrit Sra, by hand",
         "date": "2022-05"
       }
+    ],
+    "posed_by": [
+      "Thomas A. Courtade"
+    ],
+    "certificate_levels": [
+      "exact"
     ],
     "results": [
       "courtade-volume-conjecture"
@@ -170,6 +225,12 @@
         "date": "2026-08"
       }
     ],
+    "posed_by": [
+      "Mariet and Sra"
+    ],
+    "certificate_levels": [
+      "exact"
+    ],
     "results": [
       "dpp-feasible-step"
     ],
@@ -185,6 +246,12 @@
         "model": "GPT-5.6 Pro",
         "date": "2026-07-31"
       }
+    ],
+    "posed_by": [
+      "S. Sra"
+    ],
+    "certificate_levels": [
+      "exact"
     ],
     "results": [
       "log-volume-distance",
@@ -203,6 +270,12 @@
         "date": "2026-08"
       }
     ],
+    "posed_by": [
+      "Mark Fornace"
+    ],
+    "certificate_levels": [
+      "exact"
+    ],
     "results": [
       "sdd-nystrom-diminishing-returns"
     ],
@@ -218,6 +291,12 @@
         "model": "OpenAI Codex",
         "date": "2026-08"
       }
+    ],
+    "posed_by": [
+      "Amsel et al."
+    ],
+    "certificate_levels": [
+      "exact"
     ],
     "results": [
       "osi-sketch-and-solve"
@@ -235,6 +314,12 @@
         "date": "2026-08"
       }
     ],
+    "posed_by": [
+      "Amsel et al., §6.2"
+    ],
+    "certificate_levels": [
+      "exact"
+    ],
     "results": [
       "hamiltonian-nepv-identity"
     ],
@@ -251,6 +336,12 @@
         "date": "2026-08"
       }
     ],
+    "posed_by": [
+      "Anil Damle and Daniel Kressner"
+    ],
+    "certificate_levels": [
+      "exact"
+    ],
     "results": [
       "qrcp-orthonormal-greedy"
     ],
@@ -266,6 +357,12 @@
         "model": "GPT Astra (Pro)",
         "date": "2026-10-30"
       }
+    ],
+    "posed_by": [
+      "S. Sra"
+    ],
+    "certificate_levels": [
+      "computer-assisted"
     ],
     "results": [
       "hermitian-exponential-determinant"
