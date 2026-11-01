@@ -201,7 +201,7 @@ def hexlink(href, text, cls=""):
 
 def extra_label(f):
     """Button text for a file released beside the paper's PDF."""
-    return "Supplement" if "supplement" in f else html.escape(f)
+    return "Supplement" if "supplement" in f else "Note" if f.endswith("-note.pdf") else html.escape(f)
 
 
 def link_row(paper, versions, extra=""):
