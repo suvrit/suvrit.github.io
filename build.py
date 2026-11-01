@@ -410,7 +410,9 @@ if(location.hash==='#by-date'||saved==='by-date'&&!anchor?.closest('#by-subject'
 
 # ---------------------------------------------------------------- build
 
-NOTES = [("Matrix Spencer, twice: a comparison of arXiv:2608.28816 and arXiv:2609.15025",
+NOTES = [("Van der Waerden's inequality by monotone averaging",
+          "notes/van-der-waerden-note.pdf", "31 October 2026"),
+         ("Matrix Spencer, twice: a comparison of arXiv:2608.28816 and arXiv:2609.15025",
           "notes/ms-note.pdf", "15 September 2026")]
 # One note per count-ex-machina case, with this index, copied in by that
 # repository's `python tools/notes.py --copy-to <this repo>/notes/countexes`.
