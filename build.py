@@ -317,6 +317,20 @@ def short_date(d):
     return f"{int(day[0])} {month} {y}" if day else f"{month} {y}"
 
 
+def notes_table(notes):
+    # Tiles like the countex table, in its own colours; NOTES is listed newest
+    # first, so the numbers count down from the newest note.
+    rows = []
+    for no, (t, href, d) in zip(range(len(notes), 0, -1), notes):
+        rows.append(
+            f'<tr><td class="no">{no}</td>'
+            f'<td class="what"><a class="title" href="{html.escape(href)}">{html.escape(t)}</a></td>'
+            f'<td class="date">{html.escape(d)}</td>'
+            f'<td class="links"><a class="chip" href="{html.escape(href)}">PDF</a></td></tr>')
+    return (f'<h3>Notes</h3><table class="tiles notes"><thead><tr><th class="no">No.</th><th>Note</th>'
+            f'<th>Date</th><th><span class="sr">Links</span></th></tr></thead><tbody>{"".join(rows)}</tbody></table>')
+
+
 def countex_table(countexes):
     # Numbered by when each counterexample was first found, oldest = 1, and
     # listed newest first, so the list counts down.  Ties (month-only dates,
@@ -342,7 +356,7 @@ def countex_table(countexes):
             f'arXiv:2608.29595</a>). Each quotes the statement as posed, gives the counterexample with its proof, '
             f'and links to the code and certificate that recompute it. Numbered by when the counterexample was '
             f'found, newest first.</p>'
-            f'<table class="countex"><thead><tr><th class="no">No.</th><th>Counterexample</th><th>Found by</th>'
+            f'<table class="tiles countex"><thead><tr><th class="no">No.</th><th>Counterexample</th><th>Found by</th>'
             f'<th>Certificate</th><th><span class="sr">Links</span></th></tr></thead><tbody>{"".join(rows)}</tbody></table>')
 
 
@@ -363,9 +377,7 @@ def index_page(papers, subjects, info, notes, countexes):
     latest = max(v[0]["date"] for v in papers.values())
     notes_html = ""
     if notes or countexes:
-        items = "".join(f'<li><a href="{href}">{html.escape(t)}</a> <span class="meta">{html.escape(d)}</span></li>'
-                        for t, href, d in notes)
-        notes_html = (f'<section id="notes"><h2>Notes/Countexes</h2><ul class="plain">{items}</ul>'
+        notes_html = (f'<section id="notes"><h2>Notes/Countexes</h2>{notes_table(notes) if notes else ""}'
                       f'{countex_table(countexes) if countexes else ""}</section>')
     head = f'<link rel="canonical" href="{SITE}/">\n<meta property="og:title" content="Research Preprints · Suvrit Sra">\n'
     body = f"""{nav(0)}

@@ -90,37 +90,54 @@ ul.plain { padding-left: 1.1em; }
 ul.plain li { margin: 0.4em 0; }
 #notes h3 { margin: 1.6em 0 0.3em; }
 
-/* The countex table: one row per count-ex-machina note, numbered counting down.
+/* Tile tables (notes, countexes): one row per note, numbered counting down.
    Each row is a tile like a paper .card: the cells carry the surface and the
    border, the first and last cell the rounded corners, and border-spacing the
-   gap between tiles. */
-table.countex { width: 100%; margin-top: 0.4em; border-collapse: separate; border-spacing: 0 10px; }
-table.countex th {
+   gap between tiles.  Each table sets its own colour scheme through the
+   --tile-* tokens: countexes lean red, notes light blue. */
+table.tiles {
+  --tile-bg: var(--surface); --tile-line: var(--line); --tile-accent: var(--accent); --tile-soft: var(--accent-soft);
+  width: 100%; margin-top: 0.4em; border-collapse: separate; border-spacing: 0 10px;
+}
+table.tiles.countex { --tile-bg: #fdf4f3; --tile-line: #f0d0cb; --tile-accent: #b3372b; --tile-soft: #f9e0dc; }
+table.tiles.notes { --tile-bg: #f2f8fd; --tile-line: #cde2f3; --tile-accent: #2470ad; --tile-soft: #ddedf9; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) table.tiles.countex { --tile-bg: #261a19; --tile-line: #4d2d2a; --tile-accent: #f2958b; --tile-soft: #3b2422; }
+  :root:not([data-theme="light"]) table.tiles.notes { --tile-bg: #16222c; --tile-line: #27455b; --tile-accent: #84c5ef; --tile-soft: #1c3447; }
+}
+:root[data-theme="dark"] table.tiles.countex { --tile-bg: #261a19; --tile-line: #4d2d2a; --tile-accent: #f2958b; --tile-soft: #3b2422; }
+:root[data-theme="dark"] table.tiles.notes { --tile-bg: #16222c; --tile-line: #27455b; --tile-accent: #84c5ef; --tile-soft: #1c3447; }
+table.tiles th {
   text-align: left; padding: 6px 14px 0; color: var(--muted); font-weight: 500; font-size: 0.76rem;
   text-transform: uppercase; letter-spacing: 0.06em;
 }
-table.countex td {
-  padding: 14px; vertical-align: top; background: var(--surface);
-  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: border-color 0.15s;
+table.tiles td {
+  padding: 14px; vertical-align: top; background: var(--tile-bg);
+  border-top: 1px solid var(--tile-line); border-bottom: 1px solid var(--tile-line); transition: border-color 0.15s;
 }
-table.countex td:first-child { border-left: 1px solid var(--line); border-radius: 12px 0 0 12px; }
-table.countex td:last-child { border-right: 1px solid var(--line); border-radius: 0 12px 12px 0; }
-table.countex tbody tr:hover td { border-color: var(--accent); }
-table.countex .no {
+table.tiles td:first-child { border-left: 1px solid var(--tile-line); border-radius: 12px 0 0 12px; }
+table.tiles td:last-child { border-right: 1px solid var(--tile-line); border-radius: 0 12px 12px 0; }
+table.tiles tbody tr:hover td { border-color: var(--tile-accent); }
+table.tiles .no {
   width: 3.4em; text-align: right; padding-right: 6px; font-family: var(--serif); font-weight: 600;
-  font-size: 1.45rem; line-height: 1.1; color: var(--accent); font-variant-numeric: tabular-nums;
+  font-size: 1.45rem; line-height: 1.1; color: var(--tile-accent); font-variant-numeric: tabular-nums;
 }
-table.countex th.no { font-family: var(--sans); font-size: 0.76rem; line-height: inherit; color: var(--muted); }
-table.countex .title { font-family: var(--serif); font-weight: 600; font-size: 1.02rem; color: var(--ink); line-height: 1.3; }
-table.countex .title:hover { color: var(--accent); }
+table.tiles th.no { font-family: var(--sans); font-size: 0.76rem; line-height: inherit; color: var(--muted); }
+table.tiles .title { font-family: var(--serif); font-weight: 600; font-size: 1.02rem; color: var(--ink); line-height: 1.3; }
+table.tiles .title:hover { color: var(--tile-accent); }
+table.tiles .links { width: 7.4em; white-space: nowrap; text-align: right; }
+table.tiles .links .chip + .chip { margin-left: 6px; }
+table.tiles .chip { background: var(--tile-soft); }
+table.tiles .chip:hover { background: var(--tile-soft); color: var(--tile-accent); }
 table.countex .posed { display: block; margin-top: 0.25em; color: var(--muted); font-size: 0.85rem; }
 table.countex .found { width: 11.5em; font-size: 0.86rem; }
 table.countex .finder { display: block; }
 table.countex .finder + .finder { margin-top: 0.3em; }
 table.countex .when { display: block; color: var(--muted); font-size: 0.8rem; }
 table.countex .cert { width: 6em; }
-table.countex .links { width: 7.4em; white-space: nowrap; text-align: right; }
-table.countex .links .chip + .chip { margin-left: 6px; }
+table.countex .tag.exact { background: var(--tile-soft); color: var(--tile-accent); }
+table.notes .date { width: 11.5em; font-size: 0.86rem; color: var(--muted); }
+table.notes .links { width: 4.4em; }
 .tag {
   display: inline-block; margin: 0 4px 4px 0; padding: 2px 8px; border-radius: 999px;
   font-size: 0.74rem; font-weight: 500; letter-spacing: 0.02em;
@@ -156,24 +173,27 @@ footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line);
   table.versions { font-size: 0.84rem; }
   table.versions th:nth-child(3), table.versions td:nth-child(3) { display: none; }
   nav.top .links a { margin-left: 12px; }
-  table.countex thead { display: none; }
-  table.countex, table.countex tbody { display: block; }
+  table.tiles thead { display: none; }
+  table.tiles, table.tiles tbody { display: block; }
   /* On a phone the row itself is the tile; its cells are bare. */
-  table.countex tbody tr {
+  table.tiles tbody tr {
     display: grid; grid-template-columns: 2.4em auto minmax(0, 1fr); column-gap: 10px;
-    margin-top: 10px; padding: 12px 14px; background: var(--surface);
-    border: 1px solid var(--line); border-radius: 12px; transition: border-color 0.15s;
+    margin-top: 10px; padding: 12px 14px; background: var(--tile-bg);
+    border: 1px solid var(--tile-line); border-radius: 12px; transition: border-color 0.15s;
   }
-  table.countex tbody tr:hover { border-color: var(--accent); }
-  table.countex td, table.countex td:first-child, table.countex td:last-child {
+  table.tiles tbody tr:hover { border-color: var(--tile-accent); }
+  table.tiles td, table.tiles td:first-child, table.tiles td:last-child {
     display: block; padding: 0; border: 0; border-radius: 0; background: none; grid-column: 2 / span 2;
   }
-  table.countex td.no, table.countex td.found, table.countex td.cert, table.countex td.links { width: auto; text-align: left; }
-  table.countex td.no { grid-column: 1; grid-row: 1 / span 3; padding: 0; font-size: 1.3rem; }
-  table.countex td.found, table.countex td.cert, table.countex td.links { margin-top: 6px; }
-  /* The certificate tag and the PDF/Code chips share the last line. */
+  table.tiles td.no, table.tiles td.links, table.countex td.found, table.countex td.cert,
+  table.notes td.date { width: auto; text-align: left; }
+  table.tiles td.no { grid-column: 1; grid-row: 1 / span 3; padding: 0; font-size: 1.3rem; }
+  table.tiles td.links, table.countex td.found, table.countex td.cert, table.notes td.date { margin-top: 6px; }
+  /* The certificate tag (or the date) and the chips share the last line. */
   table.countex td.cert { grid-column: 2; grid-row: 3; }
   table.countex td.links { grid-column: 3; grid-row: 3; }
+  table.notes td.date { grid-column: 2; grid-row: 2; }
+  table.notes td.links { grid-column: 3; grid-row: 2; }
   table.countex .finder { display: inline; }
   table.countex .finder + .finder::before { content: " · "; color: var(--muted); }
   table.countex .when { display: inline; margin-left: 0.3em; }
